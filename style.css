@@ -1,0 +1,207 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+/* =========================
+   🌞 LIGHT MODE (DEFAULT)
+========================= */
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 15px;
+
+    background: #f4f7ff;
+    color: #111827;
+
+    transition: all 0.4s ease;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #1f2937;
+}
+
+/* =========================
+   📦 CARD (LIGHT MODE)
+========================= */
+
+.card {
+    background: white;
+    border: 1px solid #e5e7eb;
+
+    border-radius: 18px;
+    padding: 15px;
+    margin: 12px 0;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+/* =========================
+   🔘 INPUTS (LIGHT)
+========================= */
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin: 6px 0;
+
+    border-radius: 12px;
+    border: 1px solid #d1d5db;
+
+    background: white;
+    color: #111;
+
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus, select:focus {
+    border-color: #00bcd4;
+    box-shadow: 0 0 10px rgba(0,188,212,0.3);
+}
+
+/* =========================
+   🔥 BUTTONS
+========================= */
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: linear-gradient(135deg, #00bcd4, #3b82f6);
+    color: white;
+
+    font-weight: 700;
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.03);
+}
+
+/* =========================
+   🧠 BMI RING
+========================= */
+
+.circle-wrap {
+    width: 140px;
+    height: 140px;
+    margin: 15px auto;
+    position: relative;
+}
+
+.circle {
+    width: 140px;
+    height: 140px;
+    position: relative;
+}
+
+.mask, .fill {
+    width: 140px;
+    height: 140px;
+    position: absolute;
+    border-radius: 50%;
+}
+
+.mask {
+    clip: rect(0px, 140px, 140px, 70px);
+}
+
+.fill {
+    background: #00bcd4;
+    transition: 0.8s ease;
+}
+
+.inside-circle {
+    width: 110px;
+    height: 110px;
+    background: white;
+    border-radius: 50%;
+
+    position: absolute;
+    top: 15px;
+    left: 15px;
+
+    text-align: center;
+    line-height: 110px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* =========================
+   📊 CHART
+========================= */
+
+canvas {
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    padding: 8px;
+}
+
+/* =========================
+   🌙 DARK MODE (FIXED PROPERLY)
+========================= */
+
+.dark-mode {
+    background: #0b1220;
+    color: #e5e7eb;
+}
+
+/* cards */
+.dark-mode .card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* inputs */
+.dark-mode input,
+.dark-mode select {
+    background: rgba(255,255,255,0.05);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* canvas */
+.dark-mode canvas {
+    background: rgba(255,255,255,0.04);
+}
+
+/* text */
+.dark-mode h1 {
+    color: #e5e7eb;
+}
+
+/* circle fix */
+.dark-mode .inside-circle {
+    background: #0f172a;
+    color: #e5e7eb;
+}
+
+/* =========================
+   📱 MOBILE
+========================= */
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+}

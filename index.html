@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Health Tracker Pro</title>
+
+    <!-- 🌐 PWA SETTINGS -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00e5ff">
+
+    <!-- 🎨 STYLES -->
+    <link rel="stylesheet" href="style.css">
+
+<!-- 📊 Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- 🎬 Lottie Animation -->
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+</head>
+
+<body>
+
+<h1>🏥 Health Tracker Pro</h1>
+
+<!-- 🌙 DARK MODE -->
+<div class="card">
+    <button onclick="toggleDarkMode()">🌙 Toggle Dark Mode</button>
+</div>
+
+<!-- 👤 PROFILE SYSTEM -->
+<div class="card">
+    <h2>👤 Profile</h2>
+
+    <input type="text" id="profileName" placeholder="Enter Profile Name">
+
+    <select id="profileList" onchange="loadProfile()">
+        <option value="">Select Profile</option>
+    </select>
+
+    <button onclick="deleteProfile()">Delete Profile</button>
+</div>
+
+<!-- 📊 INPUT SECTION -->
+<div class="card">
+    <h2>📊 Enter Health Data</h2>
+
+    <input type="number" id="weight" placeholder="Weight (kg)">
+    <input type="number" id="height" placeholder="Height (cm)">
+    <input type="number" id="goalWeight" placeholder="Goal Weight (kg)">
+    <input type="number" id="age" placeholder="Age">
+
+    <select id="gender">
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+    </select>
+
+    <button onclick="calculateBMI()">Calculate BMI</button>
+</div>
+
+<!-- 🧠 BMI DASHBOARD -->
+<div class="card">
+
+    <h2>🧠 BMI Dashboard</h2>
+
+    <!-- 🎬 LOTTIE -->
+    <lottie-player
+        id="bmiLottie"
+        src="https://assets10.lottiefiles.com/packages/lf20_jcikwtux.json"
+        background="transparent"
+        speed="1"
+        style="width: 120px; height: 120px; margin:auto;"
+        loop
+        autoplay>
+    </lottie-player>
+
+    <!-- 📊 BMI RING -->
+    <div class="circle-wrap">
+        <div class="circle">
+
+            <div class="mask full">
+                <div class="fill" id="fill"></div>
+            </div>
+
+            <div class="mask half">
+                <div class="fill" id="fill2"></div>
+            </div>
+
+            <div class="inside-circle">
+                <span id="bmiValue">0</span>
+            </div>
+
+        </div>
+    </div>
+
+    <h3 id="bmiStatus">Waiting for input...</h3>
+</div>
+
+<!-- 📋 RESULTS -->
+<div class="card">
+    <h2>📋 Results</h2>
+
+    <h3 id="result"></h3>
+    <h3 id="advice"></h3>
+    <h3 id="dietPlan"></h3>
+    <h3 id="healthyRange"></h3>
+</div>
+
+<!-- 💧 WATER TRACKER -->
+<div class="card">
+    <h2>💧 Water Tracker</h2>
+
+    <button onclick="addWater()">+</button>
+    <button onclick="removeWater()">-</button>
+
+    <h3 id="waterTracker">0 / 8 Glasses</h3>
+</div>
+
+<!-- 🔔 NOTIFICATIONS -->
+<div class="card">
+
+    <h2>🔔 Notifications</h2>
+
+    <button onclick="enableNotifications()">Enable Notifications</button>
+    <button onclick="startWaterReminder()">Start Water Reminder</button>
+    <button onclick="stopWaterReminder()">Stop Reminder</button>
+
+    <p id="notifStatus">Notifications: OFF</p>
+
+</div>
+
+<!-- 📈 CHART -->
+<div class="card">
+    <h2>📈 Weight Chart</h2>
+    <canvas id="weightChart" width="400" height="200"></canvas>
+</div>
+
+<!-- 📋 HISTORY -->
+<div class="card">
+    <h2>📋 History</h2>
+
+    <button onclick="clearHistory()">Clear History</button>
+
+    <ul id="history"></ul>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
