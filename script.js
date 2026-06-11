@@ -14,28 +14,143 @@ function toggleDarkMode() {
 /* =========================
    💧 WATER TRACKER
 ========================= */
-let waterGlasses = 0;
+let waterGlasses = Number(localStorage.getItem("water")) || 0;
 
 function addWater() {
     waterGlasses++;
-    updateWater();
+    saveWater();
 }
 
 function removeWater() {
     if (waterGlasses > 0) {
         waterGlasses--;
     }
-    updateWater();
+    saveWater();
 }
 
-function updateWater() {
+function saveWater() {
+    localStorage.setItem("water", waterGlasses);
+
     document.getElementById("waterTracker").innerText =
         waterGlasses + " / 8 Glasses";
 }
 
 /* =========================
+   👤 PROFILE SYSTEM
+========================= */
+
+function saveProfile() {
+
+    let profileName =
+        document.getElementById("profileName").value;
+
+    if (profileName === "") {
+        alert("Enter Profile Name");
+        return;
+    }
+
+    let profileData = {
+        weight: document.getElementById("weight").value,
+        height: document.getElementById("height").value,
+        goalWeight: document.getElementById("goalWeight").value,
+        age: document.getElementById("age").value,
+        gender: document.getElementById("gender").value
+    };
+
+    localStorage.setItem(
+        "profile_" + profileName,
+        JSON.stringify(profileData)
+    );
+
+    updateProfileList();
+
+    alert("Profile Saved");
+}
+
+function updateProfileList() {
+
+    let profileList =
+        document.getElementById("profileList");
+
+    profileList.innerHTML =
+        '<option value="">Select Profile</option>';
+
+    for (let key in localStorage) {
+
+        if (key.startsWith("profile_")) {
+
+            let profileName =
+                key.replace("profile_", "");
+
+            let option =
+                document.createElement("option");
+
+            option.value = profileName;
+            option.textContent = profileName;
+
+            profileList.appendChild(option);
+        }
+    }
+}
+
+function loadProfile() {
+
+    let profileName =
+        document.getElementById("profileList").value;
+
+    if (!profileName) return;
+
+    let profileData =
+        JSON.parse(
+            localStorage.getItem(
+                "profile_" + profileName
+            )
+        );
+
+    if (!profileData) return;
+
+    document.getElementById("profileName").value =
+        profileName;
+
+    document.getElementById("weight").value =
+        profileData.weight;
+
+    document.getElementById("height").value =
+        profileData.height;
+
+    document.getElementById("goalWeight").value =
+        profileData.goalWeight;
+
+    document.getElementById("age").value =
+        profileData.age;
+
+    document.getElementById("gender").value =
+        profileData.gender;
+}
+
+function deleteProfile() {
+
+    let profileName =
+        document.getElementById("profileName").value;
+
+    if (profileName === "") {
+        alert("Enter Profile Name");
+        return;
+    }
+
+    localStorage.removeItem(
+        "profile_" + profileName
+    );
+
+    updateProfileList();
+
+    alert("Profile Deleted");
+}
+
+/* =========================
    🧠 BMI CALCULATOR
 ========================= */
+
 function calculateBMI() {
 
     let weight =
@@ -75,24 +190,16 @@ function calculateBMI() {
         status.innerText =
             "😟 Underweight";
 
-        result.innerText =
-            "BMI: " + bmi.toFixed(1);
-
         advice.innerText =
             "Increase healthy calorie intake.";
 
         diet.innerText =
             "🥛 Milk, 🍌 Banana, 🥚 Eggs";
 
-    }
-
-    else if (bmi < 25) {
+    } else if (bmi < 25) {
 
         status.innerText =
             "😊 Healthy";
-
-        result.innerText =
-            "BMI: " + bmi.toFixed(1);
 
         advice.innerText =
             "Maintain your healthy lifestyle.";
@@ -100,15 +207,10 @@ function calculateBMI() {
         diet.innerText =
             "🥗 Fruits, Vegetables, Protein";
 
-    }
-
-    else {
+    } else {
 
         status.innerText =
             "⚠️ Overweight";
-
-        result.innerText =
-            "BMI: " + bmi.toFixed(1);
 
         advice.innerText =
             "Exercise regularly and reduce sugar.";
@@ -116,6 +218,9 @@ function calculateBMI() {
         diet.innerText =
             "🥗 Salads, Oats, Lean Protein";
     }
+
+    result.innerText =
+        "BMI: " + bmi.toFixed(1);
 
     let minWeight =
         18.5 * height * height;
@@ -131,9 +236,9 @@ function calculateBMI() {
         "kg";
 
     saveHistory(weight, bmi);
-
     drawChart();
 }
+
 /* =========================
    📋 HISTORY
 ========================= */
@@ -222,9 +327,16 @@ function drawChart() {
         canvas.height
     );
 
-    if (history.length === 0) {
-        return;
-    }
+    if (history.length === 0) return;
+
+    let maxWeight =
+        Math.max(...history.map(i => i.weight));
+
+    let minWeight =
+        Math.min(...history.map(i => i.weight));
+
+    let range =
+        maxWeight - minWeight || 1;
 
     ctx.beginPath();
 
@@ -234,7 +346,8 @@ function drawChart() {
             index * 40 + 20;
 
         let y =
-            200 - item.weight;
+            180 -
+            ((item.weight - minWeight) / range) * 150;
 
         if (index === 0) {
             ctx.moveTo(x, y);
@@ -248,37 +361,6 @@ function drawChart() {
     ctx.stroke();
 }
 
-/* =========================
-   👤 PROFILE SYSTEM
-========================= */
-
-function loadProfile() {
-
-    let profileName =
-        document.getElementById("profileList").value;
-
-    if (!profileName) return;
-
-    document.getElementById("profileName").value =
-        profileName;
-}
-
-function deleteProfile() {
-
-    let profileName =
-        document.getElementById("profileName").value;
-
-    if (profileName === "") {
-        alert("Enter Profile Name");
-        return;
-    }
-
-    localStorage.removeItem(
-        "profile_" + profileName
-    );
-
-    alert("Profile Deleted");
-}
 /* =========================
    🔔 NOTIFICATIONS
 ========================= */
@@ -356,12 +438,18 @@ window.addEventListener("load", () => {
         );
     }
 
+    document.getElementById(
+        "waterTracker"
+    ).innerText =
+        waterGlasses + " / 8 Glasses";
+
+    updateProfileList();
     loadHistory();
     drawChart();
 });
 
 /* =========================
-   📱 PWA SERVICE WORKER
+   📱 SERVICE WORKER
 ========================= */
 
 if ("serviceWorker" in navigator) {
@@ -381,4 +469,3 @@ if ("serviceWorker" in navigator) {
 
         });
 }
-
